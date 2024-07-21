@@ -12,26 +12,30 @@ export type Product = {
 const timeInSeconds = 10;
 
 const ProductsList = async () => {
-  const response = await fetch('https://api.origamid.online/produtos', {
-    next: {
-      revalidate: timeInSeconds,
-    },
-  });
-  const products = (await response.json()) as Product[];
+  let products: Product[];
+
+  try {
+    const response = await fetch('https://api.origamid.online/produtos', {
+      next: {
+        revalidate: timeInSeconds,
+      },
+    });
+    products = (await response.json()) as Product[];
+  } catch {
+    console.error('Failed to fetch products.');
+    return <div>Failed to fetch products.</div>;
+  }
 
   return (
-    <>
-      <h1>Products</h1>
-      <ul>
-        {products.map((product) => {
-          return (
-            <li key={product.id}>
-              {product.nome} - {product.preco}
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <ul>
+      {products.map((product) => {
+        return (
+          <li key={product.id}>
+            {product.nome} - {product.preco}
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

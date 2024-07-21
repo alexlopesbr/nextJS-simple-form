@@ -34,7 +34,7 @@ export async function addItem(state: { errors: string[] }, formData: FormData) {
       },
       body: JSON.stringify(product),
     });
-    if (!response.ok) throw new Error('Erro ao adicionar o produto.');
+    if (!response.ok) throw new Error('Error adding the product.');
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {
@@ -44,6 +44,6 @@ export async function addItem(state: { errors: string[] }, formData: FormData) {
   }
   revalidatePath('/products');
   redirect('/products');
-  // não vai chegar ao return, porém é necessário para o TypeScript
+  // will not reach return, but it is necessary for TypeScript (looking for a best solution)
   return { errors: [] };
 }
